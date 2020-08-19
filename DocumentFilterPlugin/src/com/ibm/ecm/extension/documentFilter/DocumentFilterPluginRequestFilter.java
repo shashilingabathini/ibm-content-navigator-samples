@@ -51,12 +51,15 @@ public class DocumentFilterPluginRequestFilter extends PluginRequestFilter {
 	public JSONObject filter(PluginServiceCallbacks callbacks, HttpServletRequest request, JSONArtifact jsonRequest) throws Exception {
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger();
+		String repositoryId = request.getParameter("repositoryId");
 		String configStr = callbacks.loadConfiguration(); //contains allowed mime types
 		String config[] = configStr.split(",");
+		JSONObject jsonObject = new JSONObject();
 		boolean validationErrors = true;
 		try {
 				JSONObject jsonResponse = new JSONObject();
 				JSONObject fieldErrorsJson = new JSONObject();
+				JSONArray jsonRes = new JSONArray();
 				String mimeType = request.getParameter("mimetype");
 
 				for (String s : config) {
@@ -70,7 +73,8 @@ public class DocumentFilterPluginRequestFilter extends PluginRequestFilter {
 				{
 					fieldErrorsJson.put("symbolicName","Restricted MimeType");
 					fieldErrorsJson.put("errorMessage", "This mime type is not supported, Please add supported mime type or visit Admin Configuration to update allowed mime types");
-					jsonResponse.put("fieldErrors", fieldErrorsJson);
+					jsonRes.add(fieldErrorsJson);
+					jsonResponse.put("fieldErrors", jsonRes);
 					logger.logDebug(this, methodName, request, "Validation error: " + jsonResponse);
 					PluginRequestUtil.setRequestParameter(request, "error", "Restricted MimeType");
 					return jsonResponse;
@@ -78,6 +82,7 @@ public class DocumentFilterPluginRequestFilter extends PluginRequestFilter {
 			}
 		catch (Exception e) {
 			logger.logError(this, methodName, request, "EDSException: " + e);
+			//return FilterUtils.generateErrorResponse(request, e);
 		}
 		return null;
 	}

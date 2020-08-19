@@ -8,8 +8,9 @@ require(["dojo/aspect",
         "dojo/_base/lang",
         "ecm/model/Request",
         "ecm/model/Repository",
-        "ecm/widget/dialog/MessageDialog"
-], function(aspect, declare, lang, Request, Repository, MessageDialog) {
+        "ecm/widget/dialog/MessageDialog",
+        "ecm/widget/dialog/AddContentItemDialog"
+], function(aspect, declare, lang, Request, Repository, MessageDialog, AddContentItemDialog) {
     var messagesDialog = null;
 
     var showErrorMessage = function(message) {
@@ -20,9 +21,8 @@ require(["dojo/aspect",
       };
 
     aspect.before(Repository.prototype, "_addDocumentItemCompleted", function(response, parentFolder, callback) {
-    debugger;
-    if (response["fieldErrors"]){
-        showErrorMessage("Error Encountered: "+ response.fieldErrors.symbolicName);
+    if (response.fieldErrors){
+        showErrorMessage("Error Encountered: "+ response.fieldErrors[0].symbolicName);
         return null;
     }
     return [response, parentFolder, callback];
