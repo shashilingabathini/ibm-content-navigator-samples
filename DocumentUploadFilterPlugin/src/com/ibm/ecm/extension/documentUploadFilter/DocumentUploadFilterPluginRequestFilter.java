@@ -22,7 +22,7 @@
 package com.ibm.ecm.extension.documentUploadFilter;
 
 import javax.servlet.http.HttpServletRequest;
-
+import java.util.ResourceBundle;
 import com.ibm.ecm.extension.PluginRequestFilter;
 import com.ibm.ecm.extension.PluginServiceCallbacks;
 import com.ibm.ecm.extension.PluginLogger;
@@ -32,12 +32,10 @@ import com.ibm.json.java.JSONArtifact;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 
-
 /**
  * Provides a filter for responses from the "getDesktop" service.
  */
 public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter {
-
 	/**
 	 * Returns an array of the services that are extended by this filter.
 	 *
@@ -50,13 +48,15 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 
 	@Override
 	public JSONObject filter(PluginServiceCallbacks callbacks, HttpServletRequest request, JSONArtifact jsonRequest) throws Exception {
+		ResourceBundle centralizedMessages = ResourceBundle.getBundle("com.ibm.ecm.extension.documentUploadFilter.nls.Messages");
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger();
 		String repositoryId = request.getParameter("repositoryId");
-		String configStr = callbacks.loadConfiguration(); //contains allowed mime types as an object {allowedTypes:[values]}
+		String configStr = callbacks.loadConfiguration(); //contains allowed MIME types as an object {allowedTypes:[values]}
 		JSONObject configObj = JSONObject.parse(configStr);
 		JSONArray allowedTypes = (JSONArray)configObj.get("allowedTypes");
 		boolean validationErrors = true;
+
 		try {
 				JSONObject jsonResponse = new JSONObject();
 				JSONObject fieldErrorsJson = new JSONObject();
@@ -71,20 +71,26 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 					}
 				}
 
-				if(validationErrors)
-				{
-					fieldErrorsJson.put("symbolicName","Restricted MimeType");
-					fieldErrorsJson.put("errorMessage", "This mime type is not supported. Please add a document with supported mime type or visit Admin Configuration to update allowed mime types");
-					jsonRes.add(fieldErrorsJson);
-					jsonResponse.put("fieldErrors", jsonRes);
+				if(validationErrors) {
+					JSONObject errorMessage = new JSONObject();
+					errorMessage.put("text", centralizedMessages.getString("error.Text.summary").concat(": ").concat(mimeType));
+					errorMessage.put("explanation", centralizedMessages.getString("error.Text.explanation"));
+					JSONArray jsonErrors;
+
+					if (jsonResponse.containsKey("errors")) {
+						jsonErrors = (JSONArray)jsonResponse.get("errors");
+					} else {
+						jsonErrors = new JSONArray();
+						jsonResponse.put("errors", jsonErrors);
+					}
+
+					jsonErrors.add(errorMessage);
 					logger.logDebug(this, methodName, request, "Validation error: " + jsonResponse);
-					PluginRequestUtil.setRequestParameter(request, "error", "Restricted MimeType");
 					return jsonResponse;
 				}
+			} catch (Exception e) {
+				logger.logError(this, methodName, request, "EDSException: " + e);
 			}
-		catch (Exception e) {
-			logger.logError(this, methodName, request, "EDSException: " + e);
-		}
 		return null;
 	}
 }

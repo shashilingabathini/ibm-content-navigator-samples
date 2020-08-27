@@ -33,49 +33,44 @@ define([
 	"./Messages"
 ], function(lang, declare, _TemplatedMixin, _WidgetsInTemplateMixin, HoverHelp, MultiValueInputPane, DropDownInput, PluginConfigurationPane, template, Messages) {
 	return declare("DocumentUploadFilterPluginDojo.ConfigurationPane", [ PluginConfigurationPane, _TemplatedMixin, _WidgetsInTemplateMixin], {
+	    templateString: template,
+	    widgetsInTemplate: true,
+	    messages: Messages,
 
-		templateString: template,
-		widgetsInTemplate: true,
-		messages: Messages,
-
-		load: function(callback) {
-		    if (this.configurationString) {
-                    var config = eval("(" + this.configurationString + ")");
-                    this._createMultiValueInputPane(config.allowedTypes);
+	    load: function(callback) {
+	        var allowedTypes = [];
+	        if (this.configurationString) {
+	            var config = eval("(" + this.configurationString + ")");
+	            allowedTypes = config.allowedTypes;
             }
-            else{
-                this._createMultiValueInputPane("");
-            }
+            this._createMultiValueInputPane(allowedTypes);
 		},
 
 		_onFieldChange: function() {
 		    this._multiValueInputPane.onSave();
-
 		    this.configurationString = JSON.stringify({
-                    				allowedTypes: this._multiValueInputPane.getValue()
-                    			});
+		        allowedTypes: this._multiValueInputPane.getValue()
+		        });
+            this.onSaveNeeded(true);
+        },
 
-		    this.onSaveNeeded(true);
-		},
+        _createInputData: function(values) {
+            var data = {"values":values,
+                        "readOnly":false,
+                        "invalidMessage": "This is an invalid entry. Please enter MIME type as filetype/extension",
+                        "dataType": "xs:string",
+                        "regularExpr":"^[a-zA-Z0-9_]+\\/[-+.a-zA-Z0-9_]+$"};
+            return data;
+        },
 
-		_buildInputPaneObj: function(values){
-		    var data = {"values":values,
-		                "readOnly":false,
-		                "invalidMessage": "This is an invalid entry. Please enter mime type as filetype/extension",
-		                "dataType": "xs:string",
-		                "regularExpr": "^[a-zA-Z]+\\/[a-zA-Z]+$"};
-		    return data;
-		},
-
-		_createMultiValueInputPane: function(values) {
+        _createMultiValueInputPane: function(values) {
             // create a new MultiValueChoicePane and add all of our data to it
-            var list = this._buildInputPaneObj(values);
-
+            var list = this._createInputData(values);
             this._multiValueInputPane = new MultiValueInputPane({
-            								allowDuplicateValues: false,
-            								hasSorting: false,
-            								trimStrings: false
-            							});
+                                            allowDuplicateValues: false,
+                                            hasSorting: false,
+                                            trimStrings: false
+                                        });
             // DOJO recommends we call the startup function on dynamic DOM object creation
             this._multiValueInputPane.setData(list);
             this._multiValueInputPane.setEditable(true);
@@ -86,10 +81,11 @@ define([
         },
 
         destroy: function() {
+            this.inherited(arguments);
             if (this._multiValueInputPane) {
-                this.inherited(arguments);
                 this._multiValueInputPane.destroy();
             }
+            delete this._multiValueInputPane;
         }
 	});
 });

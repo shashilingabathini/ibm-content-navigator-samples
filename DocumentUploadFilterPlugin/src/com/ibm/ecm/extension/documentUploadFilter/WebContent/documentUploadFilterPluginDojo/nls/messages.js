@@ -21,10 +21,9 @@
 
 
 define({
-	root:
-	({
-		document_Upload_Filter_label: "Enter Document Mime Type: ",
-		document_Upload_Filter_hover_help: "Enter definition as filetype/extension - Example entry: 'text/csv', 'image/png'",
+	root: ({
+		document_Upload_Filter_label: "Enter Document MIME Type:",
+		document_Upload_Filter_hover_help: "Add the MIME types that are allowed to be uploaded when creating/adding a document. For example, image/png.",
 
 		"nop": null
 	})

@@ -26,11 +26,6 @@ public class DocumentUploadFilterPlugin extends Plugin {
 	}
 
 	@Override
-	public String getScript() {
-		return "DocumentUploadFilterPlugin.js";
-	}
-
-	@Override
 	public String getDojoModule() {
 		return "documentUploadFilterPluginDojo";
 	}
@@ -42,7 +37,7 @@ public class DocumentUploadFilterPlugin extends Plugin {
 
 	@Override
 	public PluginRequestFilter[] getRequestFilters() {
-		return  new PluginRequestFilter[] { new DocumentUploadFilterPluginRequestFilter() };
+		return new PluginRequestFilter[] { new DocumentUploadFilterPluginRequestFilter() };
 	}
 
 }

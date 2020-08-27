@@ -25,7 +25,8 @@ define([
 	"dojo/_base/lang",
 	"dojo/i18n!documentUploadFilterPluginDojo/nls/messages",
 ], function(lang, messages) {
-	var documentUploadFilterPlugin = lang.getObject("DocumentUploadFilterPlugin", true);
-	documentUploadFilterPlugin.messages = messages;
-	return documentUploadFilterPlugin.messages;
-});
+        var documentUploadFilterPlugin = lang.getObject("DocumentUploadFilterPlugin", true);
+        documentUploadFilterPlugin.messages = messages;
+        return documentUploadFilterPlugin.messages;
+    }
+);
