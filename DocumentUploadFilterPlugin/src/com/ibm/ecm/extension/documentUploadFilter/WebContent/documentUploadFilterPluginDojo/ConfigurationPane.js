@@ -27,11 +27,10 @@ define([
 	"dijit/_WidgetsInTemplateMixin",
 	"ecm/widget/HoverHelp",
 	"ecm/widget/MultiValueInputPane",
-	"ecm/widget/DropDownInput",
 	"ecm/widget/admin/PluginConfigurationPane",
 	"dojo/text!./templates/ConfigurationPane.html",
 	"./Messages"
-], function(lang, declare, _TemplatedMixin, _WidgetsInTemplateMixin, HoverHelp, MultiValueInputPane, DropDownInput, PluginConfigurationPane, template, Messages) {
+], function(lang, declare, _TemplatedMixin, _WidgetsInTemplateMixin, HoverHelp, MultiValueInputPane, PluginConfigurationPane, template, Messages) {
 	return declare("DocumentUploadFilterPluginDojo.ConfigurationPane", [ PluginConfigurationPane, _TemplatedMixin, _WidgetsInTemplateMixin], {
 	    templateString: template,
 	    widgetsInTemplate: true,
