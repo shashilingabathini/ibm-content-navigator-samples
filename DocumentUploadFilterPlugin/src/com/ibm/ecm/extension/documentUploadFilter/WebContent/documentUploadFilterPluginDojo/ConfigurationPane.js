@@ -61,7 +61,7 @@ define([
                 "readOnly": false,
                 "invalidMessage": this.messages.invalidMessage,
                 "dataType": this.messages.dataType,
-                "regularExpr": this.messages.regularExpr
+                "regularExpr": "^[a-zA-Z0-9_]+\\/[-+.a-zA-Z0-9_]+$"
             };
             return data;
         },
