@@ -60,7 +60,7 @@ define([
                 "values": values,
                 "readOnly": false,
                 "invalidMessage": this.messages.invalidMessage,
-                "dataType": this.messages.dataType,
+                "dataType": "xs:string",
                 "regularExpr": "^[a-zA-Z0-9_]+\\/[-+.a-zA-Z0-9_]+$"
             };
             return data;

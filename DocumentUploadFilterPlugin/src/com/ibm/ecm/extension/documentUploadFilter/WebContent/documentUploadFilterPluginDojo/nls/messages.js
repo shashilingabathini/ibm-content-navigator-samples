@@ -25,7 +25,6 @@ define({
         document_Upload_Filter_label: "Enter Document MIME Type:",
         document_Upload_Filter_hover_help: "Add the MIME types that are allowed to be uploaded when creating/adding a document. For example, image/png.",
         invalidMessage: "This is an invalid entry. Please enter MIME type as filetype/extension",
-        dataType: "xs:string",
 
         "nop": null
     })
