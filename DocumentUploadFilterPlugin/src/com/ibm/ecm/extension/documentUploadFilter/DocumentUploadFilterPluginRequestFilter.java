@@ -58,7 +58,6 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 		boolean validationErrors = true;
 
 		try {
-				JSONObject jsonResponse = new JSONObject();
 				String mimeType = request.getParameter("mimetype");
 
 				for (int i = 0; i < allowedTypes.size(); i++) {
@@ -70,24 +69,21 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 				}
 
 				if(validationErrors) {
+					JSONObject jsonResponse = new JSONObject();
 					JSONObject errorMessage = new JSONObject();
+
 					errorMessage.put("text", centralizedMessages.getString("error.Text.summary").concat(": ").concat(mimeType));
 					errorMessage.put("explanation", centralizedMessages.getString("error.Text.explanation"));
-					JSONArray jsonErrors;
 
-					if (jsonResponse.containsKey("errors")) {
-						jsonErrors = (JSONArray)jsonResponse.get("errors");
-					} else {
-						jsonErrors = new JSONArray();
-						jsonResponse.put("errors", jsonErrors);
-					}
+					JSONArray jsonErrors = new JSONArray();
 
+					jsonResponse.put("errors", jsonErrors);
 					jsonErrors.add(errorMessage);
 					logger.logDebug(this, methodName, request, "Validation error: " + jsonResponse);
 					return jsonResponse;
 				}
 			} catch (Exception e) {
-				logger.logError(this, methodName, request, "EDSException: " + e);
+				logger.logError(this, methodName, request, "Exception: " + e);
 			}
 		return null;
 	}
