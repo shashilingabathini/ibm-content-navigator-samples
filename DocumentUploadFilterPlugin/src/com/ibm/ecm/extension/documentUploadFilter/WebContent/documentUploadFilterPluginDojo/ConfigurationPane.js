@@ -74,7 +74,6 @@ define([
                 hasSorting: false,
                 trimStrings: false
             });
-            // DOJO recommends we call the startup function on dynamic DOM object creation
             this._multiValueInputPane.setData(list);
             this._multiValueInputPane.setEditable(true);
             this._multiValueInputContainer.appendChild(this._multiValueInputPane.domNode);
