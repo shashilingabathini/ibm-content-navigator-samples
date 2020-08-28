@@ -36,29 +36,33 @@ define([
 	    widgetsInTemplate: true,
 	    messages: Messages,
 
-	    load: function(callback) {
-	        var allowedTypes = [];
-	        if (this.configurationString) {
-	            var config = eval("(" + this.configurationString + ")");
-	            allowedTypes = config.allowedTypes;
+        load: function(callback) {
+            var allowedTypes = [];
+            if (this.configurationString) {
+                var config = eval("(" + this.configurationString + ")");
+                allowedTypes = config.allowedTypes;
             }
-            this._createMultiValueInputPane(allowedTypes);
-		},
+            if (!this._multiValueInputPane) {
+                this._createMultiValueInputPane(allowedTypes);
+            }
+        },
 
-		_onFieldChange: function() {
-		    this._multiValueInputPane.onSave();
-		    this.configurationString = JSON.stringify({
-		        allowedTypes: this._multiValueInputPane.getValue()
-		        });
+        _onFieldChange: function() {
+            this._multiValueInputPane.onSave();
+            this.configurationString = JSON.stringify({
+                allowedTypes: this._multiValueInputPane.getValue()
+            });
             this.onSaveNeeded(true);
         },
 
         _createInputData: function(values) {
-            var data = {"values":values,
-                        "readOnly":false,
-                        "invalidMessage": "This is an invalid entry. Please enter MIME type as filetype/extension",
-                        "dataType": "xs:string",
-                        "regularExpr":"^[a-zA-Z0-9_]+\\/[-+.a-zA-Z0-9_]+$"};
+            var data = {
+                "values": values,
+                "readOnly": false,
+                "invalidMessage": this.messages.invalidMessage,
+                "dataType": this.messages.dataType,
+                "regularExpr": this.messages.regularExpr
+            };
             return data;
         },
 
@@ -66,10 +70,10 @@ define([
             // create a new MultiValueChoicePane and add all of our data to it
             var list = this._createInputData(values);
             this._multiValueInputPane = new MultiValueInputPane({
-                                            allowDuplicateValues: false,
-                                            hasSorting: false,
-                                            trimStrings: false
-                                        });
+                allowDuplicateValues: false,
+                hasSorting: false,
+                trimStrings: false
+            });
             // DOJO recommends we call the startup function on dynamic DOM object creation
             this._multiValueInputPane.setData(list);
             this._multiValueInputPane.setEditable(true);
@@ -83,8 +87,8 @@ define([
             this.inherited(arguments);
             if (this._multiValueInputPane) {
                 this._multiValueInputPane.destroy();
+                delete this._multiValueInputPane;
             }
-            delete this._multiValueInputPane;
         }
-	});
+    });
 });

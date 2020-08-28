@@ -1,7 +1,7 @@
 # Document Upload Filter plug-in
 
 This plugin is used to specify document MIME types that can be uploaded, using ICN Add-Item dialogue. Hence, restrict MIME types that are not specified.
-In the Admin Configuration Pane, you can enter allowed MIME types, using the format **fileType/extension**. For example a CSV and PDF document will be defined as text/csv and application/pdf respectively.
+In the Admin Configuration Pane, you can enter allowed MIME types, using the format **fileType/extension**. For example, a CSV and PDF document will be defined as text/csv and application/pdf respectively.
 
 
 ### Prerequisites
@@ -11,7 +11,7 @@ In the Admin Configuration Pane, you can enter allowed MIME types, using the for
 
 ### Installing the plug-in
 
-1. If you would like to build this plug-in, proceed with step 2, otherwise you can download the [documentUploadFilterPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/DocumentUploadFilterPlugin/documentUploadFilterPlugin.jar) file, and skip to step 6.
+1. If you would like to build this plug-in, proceed with step 2; otherwise, you can download the [documentUploadFilterPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/DocumentUploadFilterPlugin/documentUploadFilterPlugin.jar) file and skip to step 6.
 2. Download the DocumentUploadFilter plug-in from [GitHub](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/DocumentUploadFilterPlugin).
 3. Create a **lib** directory under the DocumentUploadFilter.
 4. Copy all the dependencies into the **lib** directory (alternatively, you can update the **classpath** in the build.xml file included with the plug-in).

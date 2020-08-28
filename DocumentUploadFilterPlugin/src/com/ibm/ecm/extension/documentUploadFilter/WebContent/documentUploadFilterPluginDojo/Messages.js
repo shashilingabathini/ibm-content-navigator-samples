@@ -28,5 +28,4 @@ define([
         var documentUploadFilterPlugin = lang.getObject("DocumentUploadFilterPlugin", true);
         documentUploadFilterPlugin.messages = messages;
         return documentUploadFilterPlugin.messages;
-    }
-);
+});
