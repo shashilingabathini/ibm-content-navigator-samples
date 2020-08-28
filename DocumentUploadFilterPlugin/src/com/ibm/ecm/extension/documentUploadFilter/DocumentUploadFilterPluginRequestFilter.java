@@ -59,8 +59,6 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 
 		try {
 				JSONObject jsonResponse = new JSONObject();
-				JSONObject fieldErrorsJson = new JSONObject();
-				JSONArray jsonRes = new JSONArray();
 				String mimeType = request.getParameter("mimetype");
 
 				for (int i = 0; i < allowedTypes.size(); i++) {
