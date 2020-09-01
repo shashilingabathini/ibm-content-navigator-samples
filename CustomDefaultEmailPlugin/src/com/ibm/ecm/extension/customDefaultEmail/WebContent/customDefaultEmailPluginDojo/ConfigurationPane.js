@@ -29,12 +29,14 @@ define([
 	"ecm/widget/TextBox",
 	"ecm/widget/SimpleTextarea",
 	"ecm/widget/admin/PluginConfigurationPane",
-	"dojo/text!./templates/ConfigurationPane.html"
-], function(lang, declare, _TemplatedMixin, _WidgetsInTemplateMixin, HoverHelp, TextBox, SimpleTextarea, PluginConfigurationPane, template) {
+	"dojo/text!./templates/ConfigurationPane.html",
+	"./Messages"
+], function(lang, declare, _TemplatedMixin, _WidgetsInTemplateMixin, HoverHelp, TextBox, SimpleTextarea, PluginConfigurationPane, template, Messages) {
 	return declare("customDefaultEmailPluginDojo.ConfigurationPane", [ PluginConfigurationPane, _TemplatedMixin, _WidgetsInTemplateMixin], {
 
 		templateString: template,
 		widgetsInTemplate: true,
+		messages: Messages,
 
 		load: function(callback) {
 		    if (this.configurationString) {
