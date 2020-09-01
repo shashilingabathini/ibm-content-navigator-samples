@@ -42,7 +42,7 @@ public class CustomDefaultEmailPluginResponseFilter extends PluginResponseFilter
 	}
 
 	/**
-	 * Filters the response from the "getDesktop" service, inserting the <code>searchPageSize</code> plug-in setting.
+	 * Filters the response from the "getDesktop" service, inserting the <code>CustomDefaultEmail</code> plug-in setting.
 	 * 
 	 * @param serverType
 	 *            A <code>String</code> that indicates the type of server that
