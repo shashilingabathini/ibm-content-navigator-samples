@@ -54,6 +54,6 @@ define([
             });
 
             this.onSaveNeeded(true);
-		}
-	});
+        }
+    });
 });
