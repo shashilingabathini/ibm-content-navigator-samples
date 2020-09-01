@@ -23,10 +23,11 @@
 define({
 	root:
 	({
-		custom_Email_subject_label: "Subject:",
-		custom_Email_message_label: "Message:",
-		custom_Email_hover_help: "Enter default subject and message that will be loaded when sending an email",
+        subject_label: "Subject:",
+        message_label: "Message:",
+        subject_hover_help: "Enter the default subject that will be used when sending an email using the HTML-email service.",
+        message_hover_help: "Enter the default message that will be used when sending an email using the HTML-email service.",
 
-		"nop": null
+        "nop": null
 	})
 });

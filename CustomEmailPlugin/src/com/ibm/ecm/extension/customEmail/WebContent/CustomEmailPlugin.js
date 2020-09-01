@@ -13,8 +13,8 @@ require(["dojo/aspect",
 
     //before _loadDefaults is called, add the subject and message values as parameters to loadDefaults method
     aspect.before(EmailDialog.prototype, "loadDefaults", function(callback) {
-        var subject = Desktop.pluginSettings && Desktop.pluginSettings.CustomEmail && Desktop.pluginSettings.CustomEmail.subject;
-        var message = Desktop.pluginSettings && Desktop.pluginSettings.CustomEmail && Desktop.pluginSettings.CustomEmail.message;
+        var subject = Desktop.pluginSettings && Desktop.pluginSettings.CustomEmailPlugin && Desktop.pluginSettings.CustomEmailPlugin.subject;
+        var message = Desktop.pluginSettings && Desktop.pluginSettings.CustomEmailPlugin && Desktop.pluginSettings.CustomEmailPlugin.message;
 
         this.subjectInput.set("value", subject);
         this.messageInput.set("value", message);

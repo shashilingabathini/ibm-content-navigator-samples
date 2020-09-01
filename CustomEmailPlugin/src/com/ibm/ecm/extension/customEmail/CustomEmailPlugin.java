@@ -10,12 +10,12 @@ import com.ibm.ecm.extension.*;
 
 public class CustomEmailPlugin extends Plugin {
 
-	public static String pluginId = "CustomEmail";
+	public static String PLUGIN_ID = "CustomEmailPlugin";
 	private PluginResponseFilter[] responseFilters = null;
 
 	@Override
 	public String getId() {
-		return "CustomEmailPlugin";
+		return PLUGIN_ID;
 	}
 
 	@Override

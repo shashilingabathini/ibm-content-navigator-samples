@@ -112,10 +112,10 @@ public class CustomEmailPluginResponseFilter extends PluginResponseFilter {
 					JSONObject customEmailPluginSettings = new JSONObject();
 					customEmailPluginSettings.put("subject", config.get("subject"));
 					customEmailPluginSettings.put("message", config.get("message"));
-					pluginSettings.put(CustomEmailPlugin.pluginId, customEmailPluginSettings);
+					pluginSettings.put(CustomEmailPlugin.PLUGIN_ID, customEmailPluginSettings);
 				}
 			} catch (Exception e) {
-				callbacks.getLogger().logError(this, "filter", "Configuration data is invalid for the SearchPageSizePlugin!", e);
+				callbacks.getLogger().logError(this, "filter", "Configuration data is invalid for the CustomEmailPlugin!", e);
 			}
 		}
 	}

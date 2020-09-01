@@ -42,15 +42,15 @@ define([
             if (this.configurationString) {
                 var config = eval("(" + this.configurationString + ")");
                 //set text boxes with stored data
-                this.customEmailTextBox.set("value", config.subject || null);
-                this.customEmailSimpleTextarea.set("value", config.message || null);
+                this.subjectTextBox.set("value", config.subject || null);
+                this.messageTextArea.set("value", config.message || null);
             }
         },
 
         _onFieldChange: function() {
             this.configurationString = JSON.stringify({
-                subject: this.customEmailTextBox.get("value"),
-                message: this.customEmailSimpleTextarea.get("value")
+                subject: this.subjectTextBox.get("value"),
+                message: this.messageTextArea.get("value")
             });
 
             this.onSaveNeeded(true);

@@ -1,6 +1,6 @@
 # Custom Email plug-in
 
-This plug-in is used to set a default email elements like subject and message, when sending an email using ICN's Email Dialog.
+This plug-in is used to provide defaults for the subject and message when sending an email using the HTML-based email service.
 
 ### Prerequisites
 
@@ -9,8 +9,8 @@ This plug-in is used to set a default email elements like subject and message, w
 
 ### Installing the plug-in
 
-1. Download the CustomEmail plug-in from [GitHub](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/CustomEmailPlugin).
-2. If you prefer not to not build this plugin, you can download the [customEmailPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/DocumentUploadFilterPlugin/customEmailPlugin.jar) file, and skip to step 6.
+1. If you would like to build this plug-in, proceed with step 2; otherwise, you can download the [customEmailPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/CustomEmailPlugin/customEmailPlugin.jar) file and skip to step 6.
+2. Download the Custom Email plug-in from [GitHub](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/CustomEmailPlugin).
 3. Create a **lib** directory under the CustomEmailPlugin.
 4. Copy the all dependencies into the **lib** directory (alternatively, you can update the **classpath** in the build.xml file included with the plug-in).
     * **navigatorAPI.jar** provided with IBM Content Navigator
