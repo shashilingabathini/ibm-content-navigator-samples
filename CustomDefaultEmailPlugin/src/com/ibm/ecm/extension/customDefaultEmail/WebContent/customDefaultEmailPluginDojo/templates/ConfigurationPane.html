@@ -1,0 +1,29 @@
+<div class="customDefaultEmail">
+	<div id="${id}_documentUploadFilter">
+		<div id="${id}_custom_Default_Email_message_label" data-dojo-type="ecm/widget/HoverHelp"> ${messages.custom_Default_Email_hover_help} </div>
+		<table class="propertyTable" role="presentation">
+			<tr>
+				<td class="propertyRowLabel">
+					<label for="${id}_custom_Default_Email_subject"> ${messages.custom_Default_Email_subject_label} </label>
+				</td>
+				<td class="propertyRowValue">
+					<div id="${id}_custom_Default_Email_subject"
+						   data-dojo-attach-point="customDefaultEmailTextBox"
+						   data-dojo-type="ecm/widget/TextBox"
+						   data-dojo-attach-event="onKeyUp: _onFieldChange"> </div>
+				</td>
+			</tr>
+			<tr>
+				<td class="propertyRowLabel">
+					<label for="${id}_custom_Default_Email_message"> ${messages.custom_Default_Email_message_label} </label>
+				</td>
+				<td class="propertyRowValue">
+					<div id="${id}_custom_Default_Email_message"
+						   data-dojo-attach-point="customDefaultEmailSimpleTextarea"
+						   data-dojo-type="ecm/widget/SimpleTextarea"
+						   data-dojo-attach-event="onKeyUp: _onFieldChange"> </div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
