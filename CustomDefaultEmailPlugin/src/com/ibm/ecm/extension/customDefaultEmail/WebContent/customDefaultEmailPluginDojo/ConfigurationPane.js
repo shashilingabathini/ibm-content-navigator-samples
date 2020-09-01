@@ -38,24 +38,22 @@ define([
 		widgetsInTemplate: true,
 		messages: Messages,
 
-		load: function(callback) {
-		    if (this.configurationString) {
-                    var config = eval("(" + this.configurationString + ")");
-                    //set text boxes with stored data
-                    this.customDefaultEmailTextBox.set("value", config.subject || null);
-                    this.customDefaultEmailSimpleTextarea.set("value", config.message || null);
+        load: function(callback) {
+            if (this.configurationString) {
+                var config = eval("(" + this.configurationString + ")");
+                //set text boxes with stored data
+                this.customDefaultEmailTextBox.set("value", config.subject || null);
+                this.customDefaultEmailSimpleTextarea.set("value", config.message || null);
             }
+        },
 
-		},
-
-		_onFieldChange: function() {
-		    this.configurationString = JSON.stringify({
+        _onFieldChange: function() {
+            this.configurationString = JSON.stringify({
                 subject: this.customDefaultEmailTextBox.get("value"),
                 message: this.customDefaultEmailSimpleTextarea.get("value")
             });
 
-		    this.onSaveNeeded(true);
+            this.onSaveNeeded(true);
 		}
-
 	});
 });
