@@ -1,6 +1,7 @@
 # Auto-Generate Email plug-in
 
-This plug-in enables the HTML-based email service to auto-generate emailList when user begins entering value in the "To" section. It can be modified to affect the cc and/or bcc section also.
+This plug-in enables the HTML-based email service to auto-generate emailList when user begins entering value in the "To" section. It can be modified to affect the cc and/or bcc section.
+As an admin user, you can utilize the configuration Pane of the plugin to modify/update the list of emails that will be auto-generated when using HTML-based email service.
 
 ### Prerequisites
 
