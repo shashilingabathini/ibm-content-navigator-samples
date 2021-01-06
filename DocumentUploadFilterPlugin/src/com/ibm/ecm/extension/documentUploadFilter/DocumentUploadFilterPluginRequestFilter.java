@@ -23,7 +23,6 @@ package com.ibm.ecm.extension.documentUploadFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ResourceBundle;
-import java.util.List;
 import com.ibm.ecm.extension.PluginRequestFilter;
 import com.ibm.ecm.extension.PluginServiceCallbacks;
 import com.ibm.ecm.extension.PluginLogger;
@@ -50,24 +49,24 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 	@Override
 	public JSONObject filter(PluginServiceCallbacks callbacks, HttpServletRequest request, JSONArtifact jsonRequest) throws Exception {
 		ResourceBundle centralizedMessages = ResourceBundle.getBundle("com.ibm.ecm.extension.documentUploadFilter.nls.Messages");
-		JSONObject configObj;
-		JSONArray allowedTypes;
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger();
 		String repositoryId = request.getParameter("repositoryId");
 		String configStr = callbacks.loadConfiguration(); //contains allowed MIME types as an object {allowedTypes:[values]}
-		boolean validationErrors = true;
-
-		if (configStr != "") {
-			configObj = JSONObject.parse(configStr);
-			allowedTypes = (JSONArray) configObj.get("allowedTypes");
-		}
-		else {
+		if (configStr == null || configStr.isEmpty()) {
 			return null;
 		}
 
+		boolean validationErrors = true;
+
 		try {
+			JSONObject configObj = JSONObject.parse(configStr);
+			JSONArray allowedTypes = (JSONArray)configObj.get("allowedTypes");
 			String mimeType = request.getParameter("mimetype");
+
+			if (allowedTypes == null || allowedTypes.isEmpty()) {
+				return null;
+			}
 
 			for (int i = 0; i < allowedTypes.size(); i++) {
 				String s = (String)allowedTypes.get(i);
