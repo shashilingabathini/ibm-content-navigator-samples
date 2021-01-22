@@ -22,20 +22,23 @@
 package com.ibm.ecm.extension.documentUploadFilter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Hashtable;
 import java.util.ResourceBundle;
 import com.ibm.ecm.extension.PluginRequestFilter;
 import com.ibm.ecm.extension.PluginServiceCallbacks;
 import com.ibm.ecm.extension.PluginLogger;
-import com.ibm.ecm.extension.PluginRequestUtil;
+import com.ibm.ecm.jaxrs.upload.FormFile;
 import com.ibm.json.java.JSONObject;
 import com.ibm.json.java.JSONArtifact;
 import com.ibm.json.java.JSONArray;
-import com.ibm.json.java.JSONObject;
 
 /**
  * Provides a filter for responses from the "getDesktop" service.
  */
 public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter {
+	//mimeType of current file
+	private String mimeType;
+
 	/**
 	 * Returns an array of the services that are extended by this filter.
 	 *
@@ -51,50 +54,78 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 		ResourceBundle centralizedMessages = ResourceBundle.getBundle("com.ibm.ecm.extension.documentUploadFilter.nls.Messages");
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger();
-		String repositoryId = request.getParameter("repositoryId");
-		String configStr = callbacks.loadConfiguration(); //contains allowed MIME types as an object {allowedTypes:[values]}
-		if (configStr == null || configStr.isEmpty()) {
-			return null;
-		}
+		boolean validationErrors = false;
 
-		boolean validationErrors = true;
+		//get allowed mimeTypes from configPane
+		String configStr = callbacks.loadConfiguration();
+		if (configStr.isEmpty() || configStr == null) //whitelist has not been created
+		{
+			if (validateUploadedFile(callbacks, null))
+			{
+				return validationResponse(request,centralizedMessages, logger, methodName);
+			}
+		}
 
 		try {
 			JSONObject configObj = JSONObject.parse(configStr);
 			JSONArray allowedTypes = (JSONArray)configObj.get("allowedTypes");
-			String mimeType = request.getParameter("mimetype");
 
-			if (allowedTypes == null || allowedTypes.isEmpty()) {
-				return null;
+			if(validateUploadedFile(callbacks, allowedTypes)) {
+				return validationResponse(request,centralizedMessages, logger, methodName);
 			}
 
-			for (int i = 0; i < allowedTypes.size(); i++) {
-				String s = (String)allowedTypes.get(i);
-				if (s.equals(mimeType)) {
-					validationErrors = false;
-					break;
-				}
-			}
-
-			if(validationErrors) {
-				JSONObject jsonResponse = new JSONObject();
-				JSONObject errorMessage = new JSONObject();
-				if (mimeType == null)
-					mimeType = "null";
-
-				errorMessage.put("text", centralizedMessages.getString("error.Text.summary").concat(": ").concat(mimeType));
-				errorMessage.put("explanation", centralizedMessages.getString("error.Text.explanation"));
-
-				JSONArray jsonErrors = new JSONArray();
-
-				jsonResponse.put("errors", jsonErrors);
-				jsonErrors.add(errorMessage);
-				logger.logDebug(this, methodName, request, "Validation error: " + jsonResponse);
-				return jsonResponse;
-			}
 		} catch (Exception e) {
 			logger.logError(this, methodName, request, "Exception: " + e);
 		}
 		return null;
+	}
+
+	private boolean validateUploadedFile(PluginServiceCallbacks callbacks, JSONArray allowedTypes) {
+		if(callbacks.getRequestUploadActionForm() == null || callbacks.getRequestUploadActionForm().getMultipartRequestHandler() == null || callbacks.getRequestUploadActionForm().getMultipartRequestHandler().getFileElements() == null) {
+			return true;
+		}
+
+		Hashtable elements = callbacks.getRequestUploadActionForm().getMultipartRequestHandler().getFileElements();
+		if (elements.size() == 0) {
+			//no file to validate
+			return false;
+		}
+
+		FormFile file = (FormFile) elements.get("file");
+		mimeType = file.getContentType();
+		if (allowedTypes == null) {
+			return true;
+		}
+
+		for (int i = 0; i < allowedTypes.size(); i++) {
+			String allowedType = (String)allowedTypes.get(i);
+			if (allowedType.equals(mimeType)) {
+				return false;
+			}
+
+			else if(!allowedType.equals(mimeType) && i == allowedTypes.size()-1)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private JSONObject validationResponse(HttpServletRequest request, ResourceBundle centralizedMessages, PluginLogger logger, String methodName)
+	{
+		JSONObject jsonResponse = new JSONObject();
+		JSONObject errorMessage = new JSONObject();
+		if (mimeType == null)
+			mimeType = "null";
+
+		errorMessage.put("text", centralizedMessages.getString("error.Text.summary").concat(": ").concat(mimeType));
+		errorMessage.put("explanation", centralizedMessages.getString("error.Text.explanation"));
+
+		JSONArray jsonErrors = new JSONArray();
+
+		jsonResponse.put("errors", jsonErrors);
+		jsonErrors.add(errorMessage);
+		logger.logDebug(this, methodName, request, "Validation error: " + jsonResponse);
+		return jsonResponse;
 	}
 }
