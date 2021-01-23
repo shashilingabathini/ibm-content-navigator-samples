@@ -27,7 +27,9 @@ import java.util.ResourceBundle;
 import com.ibm.ecm.extension.PluginRequestFilter;
 import com.ibm.ecm.extension.PluginServiceCallbacks;
 import com.ibm.ecm.extension.PluginLogger;
+import com.ibm.ecm.jaxrs.action.ActionForm;
 import com.ibm.ecm.jaxrs.upload.FormFile;
+import com.ibm.ecm.jaxrs.upload.MultipartRequestHandler;
 import com.ibm.json.java.JSONObject;
 import com.ibm.json.java.JSONArtifact;
 import com.ibm.json.java.JSONArray;
@@ -54,24 +56,15 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 		ResourceBundle centralizedMessages = ResourceBundle.getBundle("com.ibm.ecm.extension.documentUploadFilter.nls.Messages");
 		String methodName = "filter";
 		PluginLogger logger = callbacks.getLogger();
-		boolean validationErrors = false;
 
 		//get allowed mimeTypes from configPane
 		String configStr = callbacks.loadConfiguration();
-		if (configStr.isEmpty() || configStr == null) //whitelist has not been created
-		{
-			if (validateUploadedFile(callbacks, null))
-			{
-				return validationResponse(request,centralizedMessages, logger, methodName);
-			}
-		}
 
 		try {
-			JSONObject configObj = JSONObject.parse(configStr);
-			JSONArray allowedTypes = (JSONArray)configObj.get("allowedTypes");
+			JSONArray allowedTypes = configStr != null && !configStr.isEmpty() ? (JSONArray) JSONObject.parse(configStr).get("allowedTypes") : null;
 
-			if(validateUploadedFile(callbacks, allowedTypes)) {
-				return validationResponse(request,centralizedMessages, logger, methodName);
+			if(!validateUploadedFile(callbacks, allowedTypes)) {
+				return validationResponse(request,centralizedMessages, logger);
 			}
 
 		} catch (Exception e) {
@@ -81,38 +74,36 @@ public class DocumentUploadFilterPluginRequestFilter extends PluginRequestFilter
 	}
 
 	private boolean validateUploadedFile(PluginServiceCallbacks callbacks, JSONArray allowedTypes) {
-		if(callbacks.getRequestUploadActionForm() == null || callbacks.getRequestUploadActionForm().getMultipartRequestHandler() == null || callbacks.getRequestUploadActionForm().getMultipartRequestHandler().getFileElements() == null) {
+		//An upload is valid when there is no file uploaded or if uploaded file has a whitelisted mimeType
+		ActionForm currentForm = callbacks.getRequestUploadActionForm();
+		MultipartRequestHandler currentFormRequestHandler = currentForm != null ? currentForm.getMultipartRequestHandler() : null;
+		Hashtable fileElements = currentFormRequestHandler != null ? currentFormRequestHandler.getFileElements() : null;
+
+		//if document is uploaded without a file: valid
+		if(fileElements != null && fileElements.size() == 0)
+		{
 			return true;
 		}
 
-		Hashtable elements = callbacks.getRequestUploadActionForm().getMultipartRequestHandler().getFileElements();
-		if (elements.size() == 0) {
-			//no file to validate
-			return false;
-		}
-
-		FormFile file = (FormFile) elements.get("file");
+		FormFile file = (FormFile) fileElements.get("file");
 		mimeType = file.getContentType();
+		//if whitelist on config pane is empty: invalid
 		if (allowedTypes == null) {
-			return true;
+			return false;
 		}
 
 		for (int i = 0; i < allowedTypes.size(); i++) {
 			String allowedType = (String)allowedTypes.get(i);
 			if (allowedType.equals(mimeType)) {
-				return false;
-			}
-
-			else if(!allowedType.equals(mimeType) && i == allowedTypes.size()-1)
-			{
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private JSONObject validationResponse(HttpServletRequest request, ResourceBundle centralizedMessages, PluginLogger logger, String methodName)
+	private JSONObject validationResponse(HttpServletRequest request, ResourceBundle centralizedMessages, PluginLogger logger)
 	{
+		String methodName = "validationResponse";
 		JSONObject jsonResponse = new JSONObject();
 		JSONObject errorMessage = new JSONObject();
 		if (mimeType == null)
