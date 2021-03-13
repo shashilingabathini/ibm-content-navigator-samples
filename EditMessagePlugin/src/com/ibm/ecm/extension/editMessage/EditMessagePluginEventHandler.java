@@ -16,7 +16,7 @@ public class EditMessagePluginEventHandler {
      *     private final String userResponse;
      *     private final String adminResponse;
      *     private final Exception exception;
-     *     public HashMap<String,String> message;
+     *     private Map<String,String> message;
      *     */
     public void editAddDocumentFailedMessage(@Observes @MessageKey("additem.error.failed") @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
         String exceptionCause = message.getException().getMessage();
