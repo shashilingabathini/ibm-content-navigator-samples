@@ -50,17 +50,11 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * ActionMessage
-	 * Methods:
-	 *     public int getNumber()
-	 *     public String getText()
-	 *     public String getExplanation()
-	 *     public String getUserResponse()
-	 *     public String getAdminResponse()
-	 *     public Throwable getException()
-	 *     public boolean hasChanged() - checks whether generateNewMessage() was called
-	 *     public void generateNewMessage(int number, String text, String explanation, String userResponse, String adminResponse)
-	 **/
+	 * @Observes
+	 * @MessageKey - specify the exact error message key to listen for.
+	 *   Examples: additem.error.failed, error.exception.general, desktop.configError, admin.exception.searchaddonfailedtoinstall
+	 * @MessageType - specify the type of message to listen for.
+	 *   Options: error, info and warning*/
 
 	//This method listens for error messages with specific key - add.item.error & message type - error
 	public void editAddDocumentFailedMessage(@Observes @MessageKey("additem.error.failed") @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
