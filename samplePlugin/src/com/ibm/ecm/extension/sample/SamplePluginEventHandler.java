@@ -60,7 +60,7 @@ public class SamplePluginEventHandler {
 	public void editAddDocumentFailedMessage(@Observes @MessageKey("additem.error.failed") @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
 		String exceptionCause = message.getException().getMessage();
 		String newText = message.getText() + " is caused by: " + exceptionCause;
-		message.generateNewMessage(message.getNumber(), newText, message.getExplanation(), message.getUserResponse(), message.getAdminResponse());
+		message.updateMessage(message.getNumber(), newText, message.getExplanation(), message.getUserResponse(), message.getAdminResponse());
 	}
 
 	//This method listens for all error messages
