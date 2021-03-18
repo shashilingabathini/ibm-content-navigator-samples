@@ -50,7 +50,7 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for "error" messages with specific message key - add.item.error sent via event
+	 * Listens for "error" messages with specific message key - additem.error.failed
 	 */
 
 	public void editAddDocumentFailedMessage(@Observes @MessageKey("additem.error.failed") @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
@@ -60,7 +60,7 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for error messages sent via event
+	 * Listens for error messages
 	 */
 
 	public void editErrorMessages(@Observes @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
@@ -68,7 +68,7 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for all messages sent via event
+	 * Listens for all messages
 	 */
 
 	public void editAllMessages(@Observes ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
