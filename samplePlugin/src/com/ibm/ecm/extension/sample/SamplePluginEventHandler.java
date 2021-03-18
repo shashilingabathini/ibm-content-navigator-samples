@@ -50,13 +50,8 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for "error" messages with specific message key - add.item.error
-	 *
-	 * @Observes
-	 * @MessageKey - specify the exact error message key to listen for.
-	 * 	Examples: additem.error.failed, error.exception.general, desktop.configError, admin.exception.searchaddonfailedtoinstall
-	 * @MessageType - specify the type of message to listen for.
-	 * 	Options: error, info and warning*/
+	 * Listens for "error" messages with specific message key - add.item.error sent via event from {@link com/ibm/ecm/mediator/BaseMediator.java}
+	 */
 
 	public void editAddDocumentFailedMessage(@Observes @MessageKey("additem.error.failed") @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
 		String exceptionCause = message.getException().getMessage();
@@ -65,16 +60,16 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for error messages sent via event handler in {@link com/ibm/ecm/mediator/BaseMediator.java}
-	 * */
+	 * Listens for error messages sent via event from {@link com/ibm/ecm/mediator/BaseMediator.java}
+	 */
 
 	public void editErrorMessages(@Observes @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
 
 	}
 
 	/**
-	 * Listens for all messages sent via event handler in {@link com/ibm/ecm/mediator/BaseMediator.java}
-	 * */
+	 * Listens for all messages sent via event from {@link com/ibm/ecm/mediator/BaseMediator.java}
+	 */
 
 	public void editAllMessages(@Observes ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
 
