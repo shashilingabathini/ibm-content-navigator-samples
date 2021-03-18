@@ -60,7 +60,7 @@ public class SamplePluginEventHandler {
 	}
 
 	/**
-	 * Listens for error messages
+	 * Listens for all error messages
 	 */
 
 	public void editErrorMessages(@Observes @MessageType("error") ActionMessage message, HttpServletRequest request, PluginServiceCallbacks callbacks) {
