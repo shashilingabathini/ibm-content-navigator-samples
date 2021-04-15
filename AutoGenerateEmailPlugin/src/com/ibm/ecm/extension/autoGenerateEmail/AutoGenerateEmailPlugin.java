@@ -11,7 +11,6 @@ import com.ibm.ecm.extension.*;
 public class AutoGenerateEmailPlugin extends Plugin {
 
 	public static String PLUGIN_ID = "AutoGenerateEmailPlugin";
-	private PluginResponseFilter[] responseFilters = null;
 
 	@Override
 	public String getId() {
@@ -39,13 +38,8 @@ public class AutoGenerateEmailPlugin extends Plugin {
 	}
 
 	@Override
-	public String getConfigurationDijitClass() {
-		return "autoGenerateEmailPluginDojo.ConfigurationPane";
-	}
-
-	@Override
-	public PluginResponseFilter[] getResponseFilters() {
-		return new PluginResponseFilter[] { new AutoGenerateEmailPluginResponseFilter() };
+	public PluginService[] getServices() {
+		return new PluginService[] { new AutoGenerateEmailPluginService() };
 	}
 
 }
