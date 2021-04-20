@@ -97,6 +97,12 @@ public class AutoGenerateEmailPluginService extends PluginService {
         userInfo7.put("email", "allanirverson@pol.com");
         userInfo7.put("userId", "ai54210");
 
+        //Eight User
+        JSONObject userInfo8 = new JSONObject();
+        userInfo7.put("name", "Bayo");
+        userInfo7.put("email", "buckbillace@pol.com");
+        userInfo7.put("userId", "b754210");
+
         //Add users to list
         JSONArray userList = new JSONArray();
         userList.add(userInfo);
@@ -105,6 +111,9 @@ public class AutoGenerateEmailPluginService extends PluginService {
         userList.add(userInfo4);
         userList.add(userInfo5);
         userList.add(userInfo6);
+        userList.add(userInfo7);
+        userList.add(userInfo8);
+
 
         return userList;
 
@@ -114,7 +123,7 @@ public class AutoGenerateEmailPluginService extends PluginService {
         // this function searches by name and email
         JSONArray userQueryResponse = new JSONArray();
         String queryLowerCase = query.toLowerCase();
-        for (int i = 0; i < totalUserList.size(); i++) {
+        for (int i = 0; i < totalUserList.size() - 1; i++) {
             //by name
             String subItemName = (String)((JSONObject)totalUserList.get(i)).get("name");
             if (queryLowerCase.equals(subItemName.substring(0,query.length()).toLowerCase())) {

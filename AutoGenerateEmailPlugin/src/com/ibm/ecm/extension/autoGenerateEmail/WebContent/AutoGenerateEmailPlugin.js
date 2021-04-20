@@ -36,7 +36,6 @@ require(["dojo/aspect",
     // replace validation TextBox with ComboBox
     aspect.after(EmailDialog.prototype, "createEmailAddressListInput", function (input) {
 
-        debugger;
         //get email list. Might move this to only work onInputChange
 //        var userListPS = Desktop.pluginSettings && Desktop.pluginSettings.AutoGenerateEmailPlugin && Desktop.pluginSettings.AutoGenerateEmailPlugin.emailList;
 
@@ -57,7 +56,6 @@ require(["dojo/aspect",
              * Display an error if the user has entered text for a user but not selected a valid one.
              */
             onInputBlur = function(evt) {
-                debugger;
                 if (input.input.value && input.input.value.length > 0) {
                     // cancel pending query
                     if (input.input._queryTimeout) {
@@ -92,8 +90,6 @@ require(["dojo/aspect",
              * Adds the user selected in the dropdown to the list of valid users.
              */
             onInputSelect = function(evt){
-                debugger;
-
                 // Add the selected item in the dropdown to the list.
                 if (input.input.item){
                     if (input.input.item.value == _NO_RESULTS_ID){
@@ -124,7 +120,6 @@ require(["dojo/aspect",
             };
 
             _addInputToList = function(user) {
-                debugger;
                 input.list.addItem({ id: user.id, displayName: user.email, user: user})
                 input.input._lastQueryString = null;
                 cleanupDropDown();
@@ -134,7 +129,6 @@ require(["dojo/aspect",
             };
 
             _parseInput = function() {
-                debugger;
                 var inputValue = input.input.get("value"), values = [], value = "";
                 for (var i = 0; i < inputValue.length; i++) {
                     var c = inputValue[i];
@@ -173,7 +167,6 @@ require(["dojo/aspect",
              * Queries for a set of users to display in the dropdown.
              */
             queryForResults = function(maxRows, startIndex, queryString, nextPageDeferred) {
-                debugger;
                 var methodName = "queryForResults";
 
                 var isBackgroundRequest = true;
@@ -220,7 +213,6 @@ require(["dojo/aspect",
              * Callback for user query, checks to see if the text entered by the user has changed since the query was issued.
              */
             queryForResultsComplete = function(queryText, startIndex, nextPageDeferred, response) {
-                debugger;
                 var methodName = "queryForResultsComplete";
 
                 var maxResultsReached = response.length > _MAX_ROWS ? true : false;
@@ -251,7 +243,6 @@ require(["dojo/aspect",
              * Displays a set of users in the dropdown.
              */
             displayResults = function(searchResults, maxResultsReached, startIndex, nextPageDeferred) {
-                debugger;
                 var methodName = "displayResults";
 
                 try {
@@ -373,8 +364,6 @@ require(["dojo/aspect",
              * Clears the store and the dropdown.
              */
             cleanupDropDown = function() {
-                debugger;
-
                 // close dropdown
                 input.input.closeDropDown();
 
@@ -395,8 +384,6 @@ require(["dojo/aspect",
              * Opens the user lookup dropdown when the user clicks on the text area of the combo box.
              */
             onInputFocus = function(evt) {
-                debugger;
-
                 //input.input.setCustomValidationError(null);
 
                 // If the dropdown was closed because it lost focus, re-open it when the user selects the input field
@@ -409,8 +396,6 @@ require(["dojo/aspect",
              * Adds the user selected in the dropdown to the list of valid users.
              */
             onInputSelect =function(evt) {
-                debugger;
-
                 // Add the selected item in the dropdown to the list.
                 if (input.input.item){
                     if (input.input.item.value == _NO_RESULTS_ID){
@@ -427,7 +412,6 @@ require(["dojo/aspect",
              * Called when the user types into the user lookup combo box.
              */
             onInputChange = function(evt) {
-                debugger;
                 var methodName = "onInputChange";
 
                 // keep track of last search criteria
@@ -524,7 +508,6 @@ require(["dojo/aspect",
              * Gets a set of users to display in the dropdown based on what the user typed.
              */
             getUsers = function() {
-                debugger;
                 var methodName = "getUsers";
 
                 var numberNeeded = _MAX_ROWS + 1 + input.list.getItems().length;
