@@ -1,4 +1,4 @@
-# Email Look-Up plug-in
+# Email LookUp plug-in
 
 This plug-in generates a list of matching users in the Email Dialog when entering values in the To, BCC and CC input section.
 The source of the list can queried in the emailLookupPluginService.
@@ -10,17 +10,17 @@ The source of the list can queried in the emailLookupPluginService.
 
 ### Installing the plug-in
 
-1. If you would like to build this plug-in, proceed with step 2; otherwise, you can download the [emailLookUpPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/CustomEmailPlugin/emailLookUpPlugin.jar) file and skip to step 6.
-2. Download the Email Look-Up plug-in from [GitHub](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/AutoGenerateEmailPlugin).
-3. Create a **lib** directory under the EmailLookUpPlugin.
+1. If you would like to build this plug-in, proceed with step 2; otherwise, you can download the [emailLookupPlugin.jar](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/CustomEmailPlugin/emailLookupPlugin.jar) file and skip to step 6.
+2. Download the Email Lookup plug-in from [GitHub](https://github.com/ibm-ecm/ibm-content-navigator-samples/tree/master/EmailLookupPlugin).
+3. Create a **lib** directory under the EmailLookupPlugin.
 4. Copy the all dependencies into the **lib** directory (alternatively, you can update the **classpath** in the build.xml file included with the plug-in).
     * **navigatorAPI.jar** provided with IBM Content Navigator
     * **j2ee.jar** included with the application server
 5. Build the plug-in JAR file by running Apache Ant.
 
     ```
-    C:\> cd C:\EmailLookUpPlugin
-    C:\EmailLookUpPlugin> ant
+    C:\> cd C:\EmailLookupPlugin
+    C:\EmailLookupPlugin> ant
     ```
 6. [Register and configure the plug-in in IBM Content Navigator.](http://www.ibm.com/support/knowledgecenter/SSEUEX_3.0.8/com.ibm.installingeuc.doc/eucco012.htm)
 7. Set the desired **default subject and message**, save the plug-in and restart ICN.

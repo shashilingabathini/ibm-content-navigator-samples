@@ -3,14 +3,14 @@
  * (C) Copyright IBM Corp. 2020
  * US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-package com.ibm.ecm.extension.emailLookUp;
+package com.ibm.ecm.extension.emailLookup;
 
 import java.util.Locale;
 import com.ibm.ecm.extension.*;
 
-public class emailLookUpPlugin extends Plugin {
+public class emailLookupPlugin extends Plugin {
 
-	public static String PLUGIN_ID = "EmailLookUpPlugin";
+	public static String PLUGIN_ID = "EmailLookupPlugin";
 
 	@Override
 	public String getId() {
@@ -19,7 +19,7 @@ public class emailLookUpPlugin extends Plugin {
 
 	@Override
 	public String getName(Locale locale) {
-		return "Email Look-Up Plugin";
+		return "Email Lookup Plugin";
 	}
 
 	@Override
@@ -29,17 +29,17 @@ public class emailLookUpPlugin extends Plugin {
 
 	@Override
 	public String getScript() {
-		return "emailLookUpPlugin.js";
+		return "emailLookupPlugin.js";
 	}
 
 	@Override
 	public String getDojoModule() {
-		return "emailLookUpPluginDojo";
+		return "emailLookupPluginDojo";
 	}
 
 	@Override
 	public PluginService[] getServices() {
-		return new PluginService[] { new emailLookUpPluginService() };
+		return new PluginService[] { new emailLookupPluginService() };
 	}
 
 }

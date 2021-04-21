@@ -376,7 +376,7 @@ require(["dojo/aspect",
                 var _this = this;
                 var users;
                 //write request to service or data source
-                Request.invokePluginService("EmailLookUpPlugin", "emailLookUpPluginService", {
+                Request.invokePluginService("EmailLookupPlugin", "emailLookupPluginService", {
                     requestParams: {
                         query : queryString
                     },

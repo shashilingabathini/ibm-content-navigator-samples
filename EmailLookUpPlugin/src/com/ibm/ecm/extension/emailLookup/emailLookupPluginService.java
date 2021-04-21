@@ -3,7 +3,7 @@
  * (C) Copyright IBM Corp. 2020
  * US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-package com.ibm.ecm.extension.emailLookUp;
+package com.ibm.ecm.extension.emailLookup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +17,10 @@ import com.ibm.ecm.json.JSONResponse;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 
-public class emailLookUpPluginService extends PluginService {
+public class emailLookupPluginService extends PluginService {
 
     public String getId() {
-        return "emailLookUpPluginService";
+        return "emailLookupPluginService";
     }
 
     public void execute(PluginServiceCallbacks callbacks, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -40,12 +40,12 @@ public class emailLookUpPluginService extends PluginService {
 
         } catch (Exception e) {
             logger.logError(this, "execute", e);
-            jsonResponse.addErrorMessage(new JSONMessage(20000, "Error ocurred while Plugin Service - EmailLookUpPluginService attempted to process a request.", null, null, null, null));
+            jsonResponse.addErrorMessage(new JSONMessage(20000, "Error ocurred while Plugin Service - EmailLookupPluginService attempted to process a request.", null, null, null, null));
 
         } finally {
             logger.logExit(this,  "execute");
             // Send the response to the client.
-            PluginResponseUtil.writeJSONResponse(request, response, jsonResponse, callbacks, "EmailLookUpPluginService");
+            PluginResponseUtil.writeJSONResponse(request, response, jsonResponse, callbacks, "EmailLookupPluginService");
         }
 
     }
