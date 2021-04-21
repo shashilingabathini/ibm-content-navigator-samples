@@ -7,6 +7,7 @@
 require(["dojo/aspect",
         "dojo/dom",
         "dojo/dom-construct",
+        "dojo/dom-class",
         "dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/_base/array",
@@ -29,7 +30,7 @@ require(["dojo/aspect",
         "ecm/model/User",
         "ecm/model/Request",
         "ecm/widget/ValidationTextBox"
-], function(aspect, dom, domConstruct, declare, lang, array, JSON, parser, MemoryStore, JsonRest, keys, string, win, QueryResults, ComboBox, _TemplatedMixin, _WidgetBase, _WidgetsInTemplateMixin, MessagesMixin, LoggerMixin, EmailDialog, Desktop, User, Request, ValidationTextBox) {
+], function(aspect, dom, domConstruct, domClass, declare, lang, array, JSON, parser, MemoryStore, JsonRest, keys, string, win, QueryResults, ComboBox, _TemplatedMixin, _WidgetBase, _WidgetsInTemplateMixin, MessagesMixin, LoggerMixin, EmailDialog, Desktop, User, Request, ValidationTextBox) {
 
     /**
      * @private An input for users to share with.
@@ -44,6 +45,8 @@ require(["dojo/aspect",
 
         _NO_RESULTS_MSG: "No Users Found",
 
+        SELECT_USER_ERROR: "You must select a valid user",
+
         /**
          * Minimum elapsed time (ms) in between keystrokes before querying for users.
          */
@@ -56,7 +59,6 @@ require(["dojo/aspect",
         widgetsInTemplate: true,
 
         postCreate: function() {
-            debugger;
             this.inherited(arguments);
 
             this._searchResultsCache = {
@@ -85,6 +87,40 @@ require(["dojo/aspect",
             }).placeAt(this.list._itemsNode, "last");
             domClass.add(this.input._buttonNode, "dijitHidden");
             this.input.startup();
+
+            this.input.validate = lang.hitch(this, function(isFocused) {
+                var message = "";
+                var isValid = this.disabled || this.isValid(isFocused);
+                var isEmpty = this.value != null || "" ? false : true;
+                var state = ""; //var state = isValid ? "" : "Error";
+                if (!isValid && this._hasBeenBlurred) {
+                    state = "Error";
+                }
+                this._set("state", state);
+                if (this.state == "Error") {
+                    domClass.add(this.domNode, "Error");
+                    if (isFocused && this._hasBeenBlurred) {
+                        message = this.customErrorMessage;
+                    }
+                } else {
+                    domClass.remove(this.domNode, "Error");
+                    if (this._editable && isEmpty) {
+                        message = this.customErrorMessage;
+                    }
+                }
+                this.input.displayMessage(message);
+                return isValid;
+            });
+
+            this.input.setCustomValidationError = lang.hitch(this, function(errorMessage) {
+                this.customErrorMessage = errorMessage;
+                this.customErrorValue = this.input.value; // to know for what value the error is appropriate
+                // Set this to true so that the error state and message are displayed immediately.
+                this._hasBeenBlurred = true;
+                this.input.validate();
+            });
+
+
 
             this.own(aspect.after(this.list, "onItemRemoved", lang.hitch(this, this.onChange)));
 
@@ -146,7 +182,6 @@ require(["dojo/aspect",
          * Opens the user lookup dropdown when the user clicks on the text area of the combo box.
          */
         onInputFocus: function(evt){
-        debugger;
             // If the dropdown was closed because it lost focus, re-open it when the user selects the input field
             if (this.store.data.length > 0){
                 this.input.openDropDown();
@@ -157,7 +192,6 @@ require(["dojo/aspect",
          * Display an error if the user has entered text for a user but not selected a valid one.
          */
         onInputBlur: function(evt){
-        debugger;
             if (this.input.value && this.input.value.length > 0) {
                 // cancel pending query
                 if (this._queryTimeout) {
@@ -192,8 +226,6 @@ require(["dojo/aspect",
          * Adds the user selected in the dropdown to the list of valid users.
          */
         onInputSelect:function(evt){
-        debugger;
-
             // Add the selected item in the dropdown to the list.
             if (this.input.item){
                 if (this.input.item.value == this._NO_RESULTS_ID){
@@ -210,7 +242,6 @@ require(["dojo/aspect",
          * Called when the user types into the user lookup combo box.
          */
         onInputChange: function(evt) {
-        debugger;
             var methodName = "onInputChange";
 
             // keep track of last search criteria
@@ -305,7 +336,6 @@ require(["dojo/aspect",
          * Gets a set of users to display in the dropdown based on what the user typed.
          */
         getUsers: function(){
-        debugger;
             var numberNeeded = this._MAX_ROWS + 1 + this.list.getItems().length;
 
             // Before we issue the query, see if we have the results already in cache.
@@ -327,11 +357,14 @@ require(["dojo/aspect",
             }
         },
 
+        displayError: function(){
+			this.input.setCustomValidationError(this.SELECT_USER_ERROR);
+		},
+
         /**
          * Queries for a set of users to display in the dropdown.
          */
         queryForResults: function(maxRows, startIndex, queryString, nextPageDeferred){
-            debugger;
             var isBackgroundRequest = true;
             if (nextPageDeferred){
                 isBackgroundRequest = false;
@@ -376,7 +409,6 @@ require(["dojo/aspect",
          * Callback for user query, checks to see if the text entered by the user has changed since the query was issued.
          */
         queryForResultsComplete: function(queryText, startIndex, nextPageDeferred, response) {
-        debugger;
             var maxResultsReached = response.length > this._MAX_ROWS ? true : false;
 
             // Cache the results.
@@ -405,7 +437,6 @@ require(["dojo/aspect",
          * Displays a set of users in the dropdown.
          */
         displayResults: function(searchResults, maxResultsReached, startIndex, nextPageDeferred) {
-        debugger;
             try {
 
                 // If the store hasn't been cleared, do it now for a new query.
@@ -522,7 +553,6 @@ require(["dojo/aspect",
          * Clears the store and the dropdown.
          */
         cleanupDropDown:function(){
-        debugger;
             // close dropdown
             this.input.closeDropDown();
 
@@ -543,7 +573,6 @@ require(["dojo/aspect",
          * Adds a user to the list of selected users.
          */
         addInputToList: function(user) {
-        debugger;
             this.list.addItem({ id: user.id, displayName: user.name, user: user})
             this.input.placeAt(this.list._itemsNode, "last");
             this._lastQueryString = null;
@@ -593,7 +622,6 @@ require(["dojo/aspect",
     });
 
     EmailDialog.prototype.createEmailAddressListInput = function(id, domNode) {
-        debugger;
         var input = new _UserListInput({
             id: id,
             onChange: lang.hitch(this, "updateSendButtonState"),
