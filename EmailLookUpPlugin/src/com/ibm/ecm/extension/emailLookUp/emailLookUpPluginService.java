@@ -3,7 +3,7 @@
  * (C) Copyright IBM Corp. 2020
  * US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-package com.ibm.ecm.extension.autoGenerateEmail;
+package com.ibm.ecm.extension.emailLookUp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +17,10 @@ import com.ibm.ecm.json.JSONResponse;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 
-
-public class AutoGenerateEmailPluginService extends PluginService {
+public class emailLookUpPluginService extends PluginService {
 
     public String getId() {
-        return "autoGenerateEmailPluginService";
+        return "emailLookUpPluginService";
     }
 
     public void execute(PluginServiceCallbacks callbacks, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -32,28 +31,31 @@ public class AutoGenerateEmailPluginService extends PluginService {
         JSONResponse jsonResponse = new JSONResponse();
         String query = request.getParameter("query");
 
-        //Import user data
-        JSONArray userBase = generateUserList();
-
         try {
             //create userList function returns JSONArray
-            JSONArray userList = fetchUserList(query, userBase);
+            JSONArray userList = fetchUserList(query, userStore());
 
             //add userList as "userList" in jsonResponse
             jsonResponse.put("userList", userList);
 
         } catch (Exception e) {
             logger.logError(this, "execute", e);
-            jsonResponse.addErrorMessage(new JSONMessage(20000, "Error ocurred while Plugin Service - AutoGenerateEmailPluginService attempted to process a request.", null, null, null, null));
+            jsonResponse.addErrorMessage(new JSONMessage(20000, "Error ocurred while Plugin Service - EmailLookUpPluginService attempted to process a request.", null, null, null, null));
 
         } finally {
             logger.logExit(this,  "execute");
             // Send the response to the client.
-            PluginResponseUtil.writeJSONResponse(request, response, jsonResponse, callbacks, "AutoGenerateEmailPluginService");
+            PluginResponseUtil.writeJSONResponse(request, response, jsonResponse, callbacks, "EmailLookUpPluginService");
         }
 
     }
-    private JSONArray generateUserList() {
+
+    /**
+     * This is the source of your data. This function queries the actual store
+     * (REST or db) to get/generate users
+     * @return userList
+     */
+    private JSONArray userStore() {
         // For the sake of functionality, Static Information will be used
         //generate random userList
         JSONObject userInfo = new JSONObject();
@@ -99,9 +101,9 @@ public class AutoGenerateEmailPluginService extends PluginService {
 
         //Eight User
         JSONObject userInfo8 = new JSONObject();
-        userInfo7.put("name", "Bayo");
-        userInfo7.put("email", "buckbillace@pol.com");
-        userInfo7.put("userId", "b754210");
+        userInfo8.put("name", "Bayo");
+        userInfo8.put("email", "buckbillace@pol.com");
+        userInfo8.put("userId", "b754210");
 
         //Add users to list
         JSONArray userList = new JSONArray();
@@ -119,22 +121,22 @@ public class AutoGenerateEmailPluginService extends PluginService {
 
     }
 
-    private JSONArray fetchUserList(String query, JSONArray totalUserList) {
+    private JSONArray fetchUserList(String query, JSONArray userList) {
         // this function searches by name and email
         JSONArray userQueryResponse = new JSONArray();
         String queryLowerCase = query.toLowerCase();
-        for (int i = 0; i < totalUserList.size() - 1; i++) {
+        for (int i = 0; i < userList.size() - 1; i++) {
             //by name
-            String subItemName = (String)((JSONObject)totalUserList.get(i)).get("name");
-            if (queryLowerCase.equals(subItemName.substring(0,query.length()).toLowerCase())) {
-                userQueryResponse.add((JSONObject)totalUserList.get(i));
+            String name = (String)((JSONObject)userList.get(i)).get("name");
+            if (query.length() < name.length() && queryLowerCase.equals(name.substring(0,query.length()).toLowerCase())) {
+                userQueryResponse.add((JSONObject)userList.get(i));
                 continue;
             }
 
             //by email
-            String subItemEmail = (String)((JSONObject)totalUserList.get(i)).get("email");
-            if (queryLowerCase.equals(subItemEmail.substring(0,query.length()).toLowerCase())) {
-                userQueryResponse.add((JSONObject)totalUserList.get(i));
+            String email = (String)((JSONObject)userList.get(i)).get("email");
+            if (query.length() < email.length() && queryLowerCase.equals(email.substring(0,query.length()).toLowerCase())) {
+                userQueryResponse.add((JSONObject)userList.get(i));
             }
         }
         return userQueryResponse;

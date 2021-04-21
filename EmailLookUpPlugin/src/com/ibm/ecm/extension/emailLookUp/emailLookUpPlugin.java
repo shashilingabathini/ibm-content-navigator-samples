@@ -3,14 +3,14 @@
  * (C) Copyright IBM Corp. 2020
  * US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
-package com.ibm.ecm.extension.autoGenerateEmail;
+package com.ibm.ecm.extension.emailLookUp;
 
 import java.util.Locale;
 import com.ibm.ecm.extension.*;
 
-public class AutoGenerateEmailPlugin extends Plugin {
+public class emailLookUpPlugin extends Plugin {
 
-	public static String PLUGIN_ID = "AutoGenerateEmailPlugin";
+	public static String PLUGIN_ID = "EmailLookUpPlugin";
 
 	@Override
 	public String getId() {
@@ -19,7 +19,7 @@ public class AutoGenerateEmailPlugin extends Plugin {
 
 	@Override
 	public String getName(Locale locale) {
-		return "Auto Email Generate Plugin";
+		return "Email Look-Up Plugin";
 	}
 
 	@Override
@@ -29,17 +29,17 @@ public class AutoGenerateEmailPlugin extends Plugin {
 
 	@Override
 	public String getScript() {
-		return "AutoGenerateEmailPlugin.js";
+		return "emailLookUpPlugin.js";
 	}
 
 	@Override
 	public String getDojoModule() {
-		return "autoGenerateEmailPluginDojo";
+		return "emailLookUpPluginDojo";
 	}
 
 	@Override
 	public PluginService[] getServices() {
-		return new PluginService[] { new AutoGenerateEmailPluginService() };
+		return new PluginService[] { new emailLookUpPluginService() };
 	}
 
 }

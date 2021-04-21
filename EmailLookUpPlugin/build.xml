@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<project name="autoGenerateEmailPlugin" default="all" basedir=".">
+<project name="EmailLookUpPlugin" default="all" basedir=".">
 
     <target name="all" depends="clean,compile,jar" />
 
@@ -26,13 +26,13 @@
     <target name="jar">
         <copy todir="temp">
             <fileset dir="src">
-                <include name="com/ibm/ecm/extension/autoGenerateEmail/**" />
+                <include name="com/ibm/ecm/extension/emailLookUp/**" />
             </fileset>
         </copy>
-        <jar jarfile="autoGenerateEmailPlugin.jar">
+        <jar jarfile="emailLookUpPlugin.jar">
             <fileset dir="./temp" includes="**/*" />
             <manifest>
-                <attribute name="Plugin-Class" value="com.ibm.ecm.extension.autoGenerateEmail.AutoGenerateEmailPlugin" />
+                <attribute name="Plugin-Class" value="com.ibm.ecm.extension.emailLookUp.emailLookUpPlugin" />
                 <section name="build">
                     <attribute name="Built-By" value="${user.name}" />
                     <attribute name="Build" value="${TODAY}" />
