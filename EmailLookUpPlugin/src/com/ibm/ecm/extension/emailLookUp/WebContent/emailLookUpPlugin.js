@@ -19,13 +19,17 @@ require(["dojo/aspect",
         "dojo/window",
         "dojo/store/util/QueryResults",
         "dijit/form/ComboBox",
-        "dijit/_WidgetBase",
+        "dijit/_TemplatedMixin",
+	    "dijit/_WidgetBase",
+	    "dijit/_WidgetsInTemplateMixin",
+        "ecm/MessagesMixin",
+	    "ecm/LoggerMixin",
         "ecm/widget/dialog/EmailDialog",
         "ecm/model/Desktop",
         "ecm/model/User",
         "ecm/model/Request",
         "ecm/widget/ValidationTextBox"
-], function(aspect, dom, domConstruct, declare, lang, array, JSON, parser, MemoryStore, JsonRest, keys, string, win, QueryResults, ComboBox, _WidgetBase, EmailDialog, Desktop, User, Request, ValidationTextBox) {
+], function(aspect, dom, domConstruct, declare, lang, array, JSON, parser, MemoryStore, JsonRest, keys, string, win, QueryResults, ComboBox, _TemplatedMixin, _WidgetBase, _WidgetsInTemplateMixin, MessagesMixin, LoggerMixin, EmailDialog, Desktop, User, Request, ValidationTextBox) {
 
     /**
      * @private An input for users to share with.
