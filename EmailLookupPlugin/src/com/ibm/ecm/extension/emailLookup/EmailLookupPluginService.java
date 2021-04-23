@@ -144,14 +144,14 @@ public class EmailLookupPluginService extends PluginService {
         for (int i = 0; i < userList.size() - 1; i++) {
             //by name
             String name = (String)((JSONObject)userList.get(i)).get("name");
-            if (query.length() < name.length() && queryLowerCase.equals(name.substring(0,query.length()).toLowerCase())) {
+            if (query.length() < name.length() && name.toLowerCase().startsWith(query.toLowerCase())) {
                 userQueryResponse.add((JSONObject)userList.get(i));
                 continue;
             }
 
             //by email
             String email = (String)((JSONObject)userList.get(i)).get("email");
-            if (query.length() < email.length() && queryLowerCase.equals(email.substring(0,query.length()).toLowerCase())) {
+            if (query.length() < email.length() && email.toLowerCase().startsWith(query.toLowerCase())) {
                 userQueryResponse.add((JSONObject)userList.get(i));
             }
         }
